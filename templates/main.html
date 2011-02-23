@@ -1,0 +1,17 @@
+<html>
+	<body>
+		<b>Name:</b> {{user.name}} </br>
+		<b>Surname:</b> {{user.surname}} </br>
+		<b>Bio:</b> {{user.bio}} </br>
+		<b>Contacts:</b> 
+		<table>
+			{% for contact in contacts %}
+			<tr>
+				<td style="min-width:50px;" >{{contact.ctype}}</td>
+				<td>{{contact.value}}</td>				
+			</tr>
+			{% endfor %}
+		</table>
+	</body>
+
+</html>

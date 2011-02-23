@@ -1,0 +1,38 @@
+ [
+   {
+     "pk": 1, 
+     "model": "test_yarned_app.User", 
+     "fields": {
+       "name": "Yaroslav", 
+       "surname": "Nedash", 
+       "bio": "Software engineer and financier"
+     }
+   }, 
+   {
+     "pk": 1, 
+     "model": "test_yarned_app.Contact", 
+     "fields": {
+        "userId" : 1,
+        "ctype" : "phone",
+        "value" : "111-11-11"
+     }
+   },
+   {
+     "pk": 2, 
+     "model": "test_yarned_app.Contact", 
+     "fields": {
+        "userId" : 1,
+        "ctype" : "email",
+        "value" : "ned@some.com"
+     }
+   },
+   {
+     "pk": 3, 
+     "model": "test_yarned_app.Contact", 
+     "fields": {
+        "userId" : 1,
+        "ctype" : "icq",
+        "value" : "43545345345"
+     }
+   }
+ ]
