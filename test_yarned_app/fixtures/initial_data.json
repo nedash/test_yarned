@@ -1,7 +1,7 @@
  [
    {
      "pk": 1, 
-     "model": "test_yarned_app.User", 
+     "model": "test_yarned_app.Person", 
      "fields": {
        "name": "Yaroslav", 
        "surname": "Nedash", 
@@ -12,27 +12,36 @@
      "pk": 1, 
      "model": "test_yarned_app.Contact", 
      "fields": {
-        "userId" : 1,
-        "ctype" : "phone",
-        "value" : "111-11-11"
+        "person" : 1,        
+        "ctype" : "Email",
+        "value" : "111@gmail.com"
      }
    },
    {
      "pk": 2, 
      "model": "test_yarned_app.Contact", 
      "fields": {
-        "userId" : 1,
-        "ctype" : "email",
-        "value" : "ned@some.com"
+        "person" : 1,
+        "ctype" : "Jabber",
+        "value" : "jab@gmail.com"
      }
    },
    {
      "pk": 3, 
      "model": "test_yarned_app.Contact", 
      "fields": {
-        "userId" : 1,
-        "ctype" : "icq",
+        "person" : 1,
+        "ctype" : "Skype",
         "value" : "43545345345"
+     }
+   },
+   {
+     "pk": 4, 
+     "model": "test_yarned_app.Contact", 
+     "fields": {
+        "person" : 1,
+        "ctype" : "Other",
+        "value" : "tel:111-11-11, mob:093-578-78-91"
      }
    }
  ]

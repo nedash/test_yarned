@@ -76,6 +76,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'test_yarned.test_yarned_app.middleware.RequestFilterMiddleware',
 )
 
 ROOT_URLCONF = 'test_yarned.urls'

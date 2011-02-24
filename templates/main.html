@@ -1,17 +1,32 @@
 <html>
 	<body>
-		<b>Name:</b> {{user.name}} </br>
-		<b>Surname:</b> {{user.surname}} </br>
-		<b>Bio:</b> {{user.bio}} </br>
-		<b>Contacts:</b> 
-		<table>
-			{% for contact in contacts %}
+		<table >
 			<tr>
-				<td style="min-width:50px;" >{{contact.ctype}}</td>
-				<td>{{contact.value}}</td>				
+			<td valign="top" style="width:350px;" >
+				<b>Name:</b> {{person.name}} </br>
+				<b>Surname:</b> {{person.surname}} </br>
+				<b>Bio:</b> {{person.bio}} </br>
+			</td>
+
+			<td >
+				<b>Contacts:</b>
+				<table border="1" >
+					{% for contact in contacts %}
+					<tr>
+						<td style="min-width:50px;" >{{contact.ctype}}</td>
+						<td>{{contact.value}}</td>				
+					</tr>
+					{% endfor %}
+				</table>
+			</td>
 			</tr>
-			{% endfor %}
 		</table>
+	
+		<div style="border: 1px solid black; width:700px; height:0px; margin-top:15px;" />
+	
+		<div style="margin-top:15px;" >
+			<a href="{% url requests_info %}" >requests</a>
+		</div>
 	</body>
 
 </html>
