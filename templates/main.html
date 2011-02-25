@@ -24,8 +24,16 @@
 	
 		<div style="border: 1px solid black; width:700px; height:0px; margin-top:15px;" />
 	
-		<div style="margin-top:15px;" >
-			<a href="{% url requests_info %}" >requests</a>
+		<div style="margin-top:15px;" > <a href="{% url requests_info %}" >requests</a> </div>
+
+		<div style="border: 1px solid black; width:700px; height:0px; margin-top:15px;" />
+
+		<div style="margin-top:15px;" > 
+			<b>django.settings:</b>
+			{{settings}}
+			{{settings.ROOT_URLCONF}}
+			{{settings.TEMPLATE_CONTEXT_PROCESSORS}}
+			{{settings.LANGUAGE_CODE}}
 		</div>
 	</body>
 
