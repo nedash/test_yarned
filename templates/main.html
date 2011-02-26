@@ -1,39 +1,42 @@
-<html>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html >
+	<head>
+		<link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/main.css" />
+	</head>
+
 	<body>
-		<table >
-			<tr>
-			<td valign="top" style="width:350px;" >
+		<div style="width:700px;" >
+
+			<div style="float:left; width:50%;" >
 				<b>Name:</b> {{person.name}} </br>
 				<b>Surname:</b> {{person.surname}} </br>
 				<b>Bio:</b> {{person.bio}} </br>
-			</td>
+			</div>
 
-			<td >
-				<b>Contacts:</b>
-				<table border="1" >
-					{% for contact in contacts %}
-					<tr>
-						<td style="min-width:50px;" >{{contact.ctype}}</td>
-						<td>{{contact.value}}</td>				
-					</tr>
-					{% endfor %}
-				</table>
-			</td>
-			</tr>
-		</table>
+			<div style="float:right; width:50%;" >
+				<b>Contacts:</b> </br>
+				{% for contact in person.contact_set.all %}
+					<b>{{contact.ctype}}</b>: {{contact.value}} </br>
+				{% endfor %}
+			</div>
+		</div>
 	
-		<div style="border: 1px solid black; width:700px; height:0px; margin-top:15px;" />
+		<div class="spacer" />
 	
-		<div style="margin-top:15px;" > <a href="{% url requests_info %}" >requests</a> </div>
+		<div style="float:left; width:700px; margin-top:15px;" > 
+			<a href="{% url requests_info %}" >requests</a> 
+		</div>
 
-		<div style="border: 1px solid black; width:700px; height:0px; margin-top:15px;" />
+		<div class="spacer" />
 
-		<div style="margin-top:15px;" > 
-			<b>django.settings:</b>
-			{{settings}}
-			{{settings.ROOT_URLCONF}}
-			{{settings.TEMPLATE_CONTEXT_PROCESSORS}}
-			{{settings.LANGUAGE_CODE}}
+		<div style="float:left; margin-top:15px;" > 
+			<b>django.settings:</b>	</br>	
+			PROJECT_ROOT: {{settings.PROJECT_ROOT}} </br>
+			MEDIA_ROOT: {{settings.MEDIA_ROOT}} </br>	
+			TIME_ZONE: {{settings.TIME_ZONE}} </br>
+			LANGUAGE_CODE: {{settings.LANGUAGE_CODE}} </br>
 		</div>
 	</body>
 

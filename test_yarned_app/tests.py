@@ -1,23 +1,58 @@
-"""
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
-
-Replace these with more appropriate tests for your application.
-"""
-
 from django.test import TestCase
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.failUnlessEqual(1 + 1, 2)
+from test_yarned_app.models import Person
+from test_yarned_app.models import Contact
+from test_yarned_app.models import RequestSnapShot
 
-__test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
 
->>> 1 + 1 == 2
-True
-"""}
+class PersonInfoTest(TestCase):
+    def setUp(self):
+        self.person = Person.objects.create(name="Yaroslav",
+                                surname="NedashEx")
+        self.cskype = Contact.objects.create(person=self.person,
+                                ctype="skype", value="43534534534535")
+        self.cjabber = Contact.objects.create(person=self.person,
+                                ctype="jabber", value="qeqwe@111.com")
 
+    def testCRUD(self):
+        person_cur = Person.objects.get(surname="NedashEx")
+        self.assertEqual(self.person, person_cur)
+        contacts = self.person.contact_set.all()
+        self.assertEqual(contacts.count(), 2)
+        self.cskype.delete()
+        contacts = self.person.contact_set.all()
+        self.assertEqual(contacts.count(), 1)
+
+    def testView(self):
+        response = self.client.get('/')
+        self.assertNotEqual(response.context['person'], None)
+        self.assertEqual(response.context['person'].name, 'Yaroslav')
+
+
+class MiddlewareTest(TestCase):
+    def setUp(self):
+        self.request_snap_shot = RequestSnapShot.objects.create()
+
+    def testCRUD(self):
+        request_snap_shot_cur = RequestSnapShot.objects.get(id=1)
+        self.assertEqual(self.request_snap_shot, request_snap_shot_cur)
+        request_snap_shot_cur.path = '/path/'
+        request_snap_shot_cur.save()
+        request_snap_shot_cur = RequestSnapShot.objects.get(id=1)
+        self.assertEqual(request_snap_shot_cur.path, '/path/')
+        request_snap_shot_cur.delete()
+
+    def testView(self):
+        response = self.client.get('/requests/')
+        requests = RequestSnapShot.objects.all()
+        self.assertNotEqual(requests.count(), 0)
+        self.assertNotEqual(response.context['requests'], None)
+
+
+class ContextProcessorTest(TestCase):
+    def testView(self):
+        response = self.client.get('/')
+        self.assertEqual(response.context['MEDIA_URL'], '/mymedia/')
+        self.assertNotEqual(response.context['settings'], None)
+        self.assertEqual(response.context['settings'].TIME_ZONE,
+                                'America/Chicago')

@@ -48,12 +48,12 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/mymedia/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -70,10 +70,12 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.Loader',
 )
 
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
-
-TEMPLATE_CONTEXT_PROCESSORS += (
-     'test_yarned.test_yarned_app.context_processors.settings_processor',
+TEMPLATE_CONTEXT_PROCESSORS = (    
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.contrib.messages.context_processors.messages',
+    'django.core.context_processors.media',
+    'test_yarned.test_yarned_app.context_processors.settings_processor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -101,7 +103,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    'django.contrib.admin',
+    #'django.contrib.admin',
 
     'test_yarned.test_yarned_app'
     # Uncomment the next line to enable admin documentation:
