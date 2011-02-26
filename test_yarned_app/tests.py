@@ -27,15 +27,17 @@ class PersonInfoTest(TestCase):
         response = self.client.get('/')
         self.assertNotEqual(response.context['person'], None)
         self.assertEqual(response.context['person'].name, 'Yaroslav')
+        res = response.content.find('Yaroslav')
+        self.assertNotEqual(res, -1)
+        res = response.content.find('Nedash')
+        self.assertNotEqual(res, -1)
 
 
 class MiddlewareTest(TestCase):
-    def setUp(self):
-        self.request_snap_shot = RequestSnapShot.objects.create()
-
     def testCRUD(self):
+        request_snap_shot = RequestSnapShot.objects.create()
         request_snap_shot_cur = RequestSnapShot.objects.get(id=1)
-        self.assertEqual(self.request_snap_shot, request_snap_shot_cur)
+        self.assertEqual(request_snap_shot, request_snap_shot_cur)
         request_snap_shot_cur.path = '/path/'
         request_snap_shot_cur.save()
         request_snap_shot_cur = RequestSnapShot.objects.get(id=1)
@@ -52,7 +54,5 @@ class MiddlewareTest(TestCase):
 class ContextProcessorTest(TestCase):
     def testView(self):
         response = self.client.get('/')
-        self.assertEqual(response.context['MEDIA_URL'], '/mymedia/')
+        self.assertNotEqual(response.context['MEDIA_URL'], None)
         self.assertNotEqual(response.context['settings'], None)
-        self.assertEqual(response.context['settings'].TIME_ZONE,
-                                'America/Chicago')

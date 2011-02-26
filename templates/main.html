@@ -1,43 +1,37 @@
+{% extends "base.html" %}
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+{% block link %} <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/main.css" /> {% endblock %}
 
-<html >
-	<head>
-		<link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/main.css" />
-	</head>
+{% block content %}
+	<div style="width:700px;" >
 
-	<body>
-		<div style="width:700px;" >
-
-			<div style="float:left; width:50%;" >
-				<b>Name:</b> {{person.name}} </br>
-				<b>Surname:</b> {{person.surname}} </br>
-				<b>Bio:</b> {{person.bio}} </br>
-			</div>
-
-			<div style="float:right; width:50%;" >
-				<b>Contacts:</b> </br>
-				{% for contact in person.contact_set.all %}
-					<b>{{contact.ctype}}</b>: {{contact.value}} </br>
-				{% endfor %}
-			</div>
-		</div>
-	
-		<div class="spacer" />
-	
-		<div style="float:left; width:700px; margin-top:15px;" > 
-			<a href="{% url requests_info %}" >requests</a> 
+		<div style="float:left; width:50%;" >
+			<b>Name:</b> {{person.name}} </br>
+			<b>Surname:</b> {{person.surname}} </br>
+			<b>Bio:</b> {{person.bio}} </br>
 		</div>
 
-		<div class="spacer" />
-
-		<div style="float:left; margin-top:15px;" > 
-			<b>django.settings:</b>	</br>	
-			PROJECT_ROOT: {{settings.PROJECT_ROOT}} </br>
-			MEDIA_ROOT: {{settings.MEDIA_ROOT}} </br>	
-			TIME_ZONE: {{settings.TIME_ZONE}} </br>
-			LANGUAGE_CODE: {{settings.LANGUAGE_CODE}} </br>
+		<div style="float:right; width:50%;" >
+			<b>Contacts:</b> </br>
+			{% for contact in person.contact_set.all %}
+				<b>{{contact.ctype}}</b>: {{contact.value}} </br>
+			{% endfor %}
 		</div>
-	</body>
+	</div>
 
-</html>
+	<div class="spacer" />
+
+	<div style="float:left; width:700px; margin-top:15px;" > 
+		<a href="{% url requests_info %}" >requests</a> 
+	</div>
+
+	<div class="spacer" />
+
+	<div style="float:left; margin-top:15px;" > 
+		<b>django.settings:</b>	</br>	
+		PROJECT_ROOT: {{settings.PROJECT_ROOT}} </br>
+		MEDIA_ROOT: {{settings.MEDIA_ROOT}} </br>	
+		TIME_ZONE: {{settings.TIME_ZONE}} </br>
+		LANGUAGE_CODE: {{settings.LANGUAGE_CODE}} </br>
+	</div>
+{% endblock %}

@@ -1,25 +1,21 @@
+{% extends "base.html" %}
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+{% block content %}
+	<b>Requests</b>
 
-<html >
-	<body>		
-		<b>Requests</b>
+	<table border="1" style="width:300px;">
+		<tr>
+			<th>User</th>
+			<th>Path</th>
+		</tr>
 
-		<table border="1" style="width:300px;">
-			<tr>
-				<th>User</th>
-				<th>Path</th>
-			</tr>
+		{% for rq in requests %}
+		<tr>
+			<td align=center style="width:30%">{{rq.user}}</td>
+			<td style="width:70%">{{rq.path}}</td>
+		</tr>
+		{% endfor %}
+	</table>
 
-			{% for rq in requests %}
-			<tr>
-				<td align=center style="width:30%">{{rq.user}}</td>
-				<td style="width:70%">{{rq.path}}</td>
-			</tr>
-			{% endfor %}
-		</table>
-
-		<a href="{% url person_info %}">goto main</a>
-	</body>
-
-</html>
+	<a href="{% url person_info %}">goto main</a>
+{% endblock %}
