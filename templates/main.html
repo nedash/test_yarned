@@ -17,6 +17,14 @@
 				<b>{{contact.ctype}}</b>: {{contact.value}} </br>
 			{% endfor %}
 		</div>
+	</div>	
+
+	<div style="float:left; width:700px;" >
+		{% if user.is_authenticated %}
+			User: {{ user.username }} (<a href="{% url auth_logout %}">Logout</a>)
+		{% else %}
+			To edit data, you must <a href="{% url auth_login %}">Login</a>
+		{% endif %}
 	</div>
 
 	<div class="spacer" />

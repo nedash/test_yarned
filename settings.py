@@ -71,6 +71,7 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (    
+    'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.contrib.messages.context_processors.messages',
@@ -103,7 +104,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
-    #'django.contrib.admin',
+    'django.contrib.admin',
 
     'test_yarned.test_yarned_app'
     # Uncomment the next line to enable admin documentation:
