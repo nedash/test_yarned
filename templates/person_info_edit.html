@@ -1,6 +1,19 @@
 {% extends "main.html" %}
 
-{% block title %}Edit contact{% endblock %}
+{% block title %}Edit person info{% endblock %}
+
+{% block script %}
+
+	<script type="text/javascript" src="/admin/jsi18n/"></script>
+	<script type="text/javascript" src="{{ settings.ADMIN_MEDIA_PREFIX }}js/core.js"></script>
+
+	{{ form.media }}
+
+	<script type="text/javascript">
+		window.__admin_media_prefix__ = "{{ settings.ADMIN_MEDIA_PREFIX }}"; 
+	</script>
+
+{% endblock %}
 
 {% block person_info %}
 	<div style="float:left; width: 800px;">
