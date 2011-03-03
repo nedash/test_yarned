@@ -3,29 +3,35 @@
 {% block link %} <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/main.css" /> {% endblock %}
 
 {% block content %}
+
+	{% block person_info %}
 	<div style="width:700px;" >
 
 		<div style="float:left; width:50%;" >
 			<b>Name:</b> {{person.name}} </br>
 			<b>Surname:</b> {{person.surname}} </br>
 			<b>Bio:</b> {{person.bio}} </br>
+			<b>Birthdate:</b> {{person.birthdate}} </br>
 		</div>
 
-		<div style="float:right; width:50%;" >
+		<div style="float:right; width:50%; min-height:100px;" >
 			<b>Contacts:</b> </br>
 			{% for contact in person.contact_set.all %}
 				<b>{{contact.ctype}}</b>: {{contact.value}} </br>
 			{% endfor %}
 		</div>
-	</div>	
+	</div>
 
-	<div style="float:left; width:700px;" >
+	<div style="float:left; width:700px; margin-top:15px;" >
 		{% if user.is_authenticated %}
-			User: {{ user.username }} (<a href="{% url auth_logout %}">Logout</a>)
+			User: {{ user.username }}
+			(<a href="{% url person_info_edit %}">Edit person data</a>/
+			<a href="{% url auth_logout %}">Logout</a>)
 		{% else %}
-			To edit data, you must <a href="{% url auth_login %}">Login</a>
+			To edit person data, you must <a href="{% url auth_login %}">Login</a>
 		{% endif %}
 	</div>
+	{% endblock %}
 
 	<div class="spacer" />
 

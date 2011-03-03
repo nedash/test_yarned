@@ -5,3 +5,11 @@
 	margin-top:15px;
 	float:left;
 }
+
+.div-table{display:table;}
+
+.div-table-caption{display:table-caption;}
+
+.div-table-row{display:table-row;}
+
+.div-table-col{display:table-cell; padding: 5px;}

@@ -1,4 +1,6 @@
 from django.test import TestCase
+from django.conf import settings
+from django.contrib.auth.models import User
 
 from test_yarned_app.models import Person
 from test_yarned_app.models import Contact
@@ -56,3 +58,33 @@ class ContextProcessorTest(TestCase):
         response = self.client.get('/')
         self.assertNotEqual(response.context['MEDIA_URL'], None)
         self.assertNotEqual(response.context['settings'], None)
+        self.assertEqual(response.context['settings'].TIME_ZONE,
+                                settings.TIME_ZONE)
+
+
+class EditPersonInfoTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user('555', '555@5.com', '555')
+
+    def testView(self):
+        response = self.client.get('/person_info_edit/')
+        self.assertEqual(response.status_code, 302)
+
+        response = self.client.post('/accounts/login/',
+                                        {'username': '555', 'password': '555'})
+        self.assertEqual(response.status_code, 302)
+        res = response.content.find('password didn\'t match')
+        self.assertEqual(res, -1)
+        response = self.client.get('/person_info_edit/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Nedash')
+
+        response = self.client.post('/accounts/login/',
+                             {'username': '333', 'password': '333'})
+        self.assertEqual(response.status_code, 200)
+        res = response.content.find('password didn\'t match')
+        self.assertNotEqual(res, -1)
+        response = self.client.post('/accounts/logout/')
+        self.assertEqual(response.status_code, 302)
+        response = self.client.get('/person_info_edit/')
+        self.assertEqual(response.status_code, 302)

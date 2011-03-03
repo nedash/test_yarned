@@ -5,7 +5,8 @@
      "fields": {
        "name": "Yaroslav", 
        "surname": "Nedash", 
-       "bio": "Software engineer and financier"
+       "bio": "Software engineer and financier",
+       "birthdate" : "1985-01-01"
      }
    }, 
    {

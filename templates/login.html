@@ -1,24 +1,27 @@
 {% extends "base.html" %}
 
+{% block link %} <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/main.css" /> {% endblock %}
+
 {% block content %}
 	<div align="center">
 
 	{% if form.errors %}
-		<p class="error">Your username and password didn't match. Please try again.</p>
+		<p>Your username and password didn't match. Please try again.</p>
 	{% endif %}
 
-	<form action="." method="post" >
+	<form action="{% url django.contrib.auth.views.login %}" method="post" >
 		{% csrf_token %}
 
-		<div style="width:150px;" >
-
-			{{ form.username.label_tag }}:
-			{{ form.username }}
-
-			{{ form.password.label_tag }}:
-			{{ form.password }}
-
-		</div>
+		<div class="div-table">
+			<div class="div-table-row">
+				<div class="div-table-col">{{ form.username.label_tag }}:</div>
+				<div class="div-table-col">{{ form.username }}</div>
+			</div>
+			<div class="div-table-row">
+				<div class="div-table-col">{{ form.password.label_tag }}:</div>
+				<div class="div-table-col">{{ form.password }}</div>
+			</div>
+		</div>			
 		
 		<input type="submit" value="login" />
 		<input type="hidden" name="next" value="/" />
