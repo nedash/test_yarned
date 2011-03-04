@@ -1,6 +1,8 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from django.utils import simplejson
+from django.http import HttpResponse
 
 from test_yarned_app.models import Person, RequestSnapShot
 from test_yarned_app.forms import RersonInfoForm
@@ -26,10 +28,22 @@ def person_info_edit(request):
     if request.method == 'POST':
         form = RersonInfoForm(request.POST, instance=person)
         contacts = ContactFormSet(request.POST, instance=person)
+        status = 'ERROR'
+        errors = []
+
         if form.is_valid():
             form.save()
             if contacts.is_valid():
                 contacts.save()
+                status = 'OK'
+            else:
+                errors = [(key, value) for key,
+                    value in contacts.errors.items()]
+        else:
+            errors = [(key, value) for key, value in form.errors.items()]
+        return HttpResponse(simplejson.dumps(
+            {'status': status, 'errors': errors, }),
+            mimetype='application/javascript')
     else:
         form = RersonInfoForm(instance=person, label_suffix=':')
         contacts = ContactFormSet(instance=person)

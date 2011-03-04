@@ -9,14 +9,45 @@
 
 	{{ form.media }}
 
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.5.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.form.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.blockUI.js"></script>
+
 	<script type="text/javascript">
-		window.__admin_media_prefix__ = "{{ settings.ADMIN_MEDIA_PREFIX }}"; 
+		window.__admin_media_prefix__ = "{{ settings.ADMIN_MEDIA_PREFIX }}";
 	</script>
 
+
+	<script type="text/javascript"> 
+		$(document).ready(function() {
+		    var options = {
+			beforeSubmit: function() {
+				$.blockUI({ overlayCSS: { backgroundColor: '#fff' } });	    
+			},
+			dataType: 'json',
+			success: function(responce) {
+			    $.unblockUI();
+			    if (responce.status=="OK")
+			    {
+				$('#er_status_block').hide();
+				$('#ok_status_block').show();		
+			    }
+			    else 
+			    {
+				$('#ok_status_block').hide();
+				$('#er_status_block').show();
+				$('#er_status_block').html('Some errors  occurred: ' + responce.errors);
+			    }
+			}
+		    };    
+		    $('#personInfoForm').ajaxForm(options);
+		}); 
+	</script> 
 {% endblock %}
 
 {% block person_info %}
-	<div style="float:left; width: 800px;">
+	<div style="float:left; width: 800px; height:350px; ">
+
 		<form id="personInfoForm" action="{% url person_info_edit %}" method="post">
 			<div id="form_container">
 				{% csrf_token %}
@@ -44,12 +75,11 @@
 						</div>
 
 						{% endfor %}
-					</div>
-	
+					</div>	
 				</div>		
 
  
-				<div style="width: 350px; float: right;">
+				<div style="width:350px; float:right;">
 					<ul>
 						{{ contacts.management_form }}
 
@@ -65,6 +95,12 @@
 				<a href="{% url person_info %}">Cancel</a>
 			</div>
 		</form>
+
+		<div id="ok_status_block" align="center" class="ok_status_block">
+			Person info have been successfully updated!
+		</div>
+
+		<div id="er_status_block" align="center" class="er_status_block"> </div>
 	</div>
 {% endblock %}
 

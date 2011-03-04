@@ -6,6 +6,22 @@
 	float:left;
 }
 
+.ok_status_block {
+	display:none; 
+	float:left; 
+	color:green; 
+	margin-top:3px; 
+	width:100%;
+}
+
+.er_status_block {
+	display:none; 
+	float:left; 
+	color:red; 
+	margin-top:3px; 
+	width:100%;
+}
+
 .div-table{display:table;}
 
 .div-table-caption{display:table-caption;}
