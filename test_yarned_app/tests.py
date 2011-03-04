@@ -83,6 +83,11 @@ class EditPersonInfoTest(TestCase):
         self.assertTrue(response.content.find('id_surname') >
                         response.content.find('id_bio'))
 
+        #test template tag
+        response = self.client.get('/')
+        res = response.content.find('admin/test_yarned_app/person/1/')
+        self.assertNotEqual(res, -1)
+
         response = self.client.post('/accounts/login/',
                              {'username': '333', 'password': '333'})
         self.assertEqual(response.status_code, 200)

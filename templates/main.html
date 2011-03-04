@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load object_tags %}
+
 {% block link %} <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/main.css" /> {% endblock %}
 
 {% block content %}
@@ -24,8 +26,12 @@
 
 	<div style="float:left; width:700px; margin-top:15px;" >
 		{% if user.is_authenticated %}
-			User: {{ user.username }}
-			(<a href="{% url person_info_edit %}">Edit person data</a>/
+			User: {{ user.username }}, {{ user.email }} </br>
+			(<a href="{% url person_info_edit %}">Edit person data</a>|
+
+	    		<a href="{% edit_object user %}">Edit user data</a> |
+	    		<a href="{% edit_object person %}">Edit person data on admin page</a> |
+
 			<a href="{% url auth_logout %}">Logout</a>)
 		{% else %}
 			To edit person data, you must <a href="{% url auth_login %}">Login</a>
