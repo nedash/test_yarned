@@ -5,18 +5,15 @@
 {% block script %}
 
 	<script type="text/javascript" src="/admin/jsi18n/"></script>
-	<script type="text/javascript" src="{{ settings.ADMIN_MEDIA_PREFIX }}js/core.js"></script>
 
 	{{ form.media }}
 
-	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.5.js"></script>
 	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.form.js"></script>
 	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.blockUI.js"></script>
 
 	<script type="text/javascript">
 		window.__admin_media_prefix__ = "{{ settings.ADMIN_MEDIA_PREFIX }}";
 	</script>
-
 
 	<script type="text/javascript"> 
 		$(document).ready(function() {
@@ -36,18 +33,26 @@
 			    {
 				$('#ok_status_block').hide();
 				$('#er_status_block').show();
-				$('#er_status_block').html('Some errors  occurred: ' + responce.errors);
+
+				er_html = '<ul style="width:25%;" > Some errors occurred: ';
+				for (key in responce.errors) {
+					error = responce.errors[key].toString().toLowerCase();
+					er_html += '<li>' + error + '</li>';
+				}
+				er_html += '</ul>';
+				$('#er_status_block').html(er_html);
 			    }
 			}
 		    };    
 		    $('#personInfoForm').ajaxForm(options);
 		}); 
 	</script> 
+
+
 {% endblock %}
 
 {% block person_info %}
-	<div style="float:left; width: 800px; height:350px; ">
-
+	<div style="float:left; width: 800px; ">
 		<form id="personInfoForm" action="{% url person_info_edit %}" method="post">
 			{% csrf_token %}
 

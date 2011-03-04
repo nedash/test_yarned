@@ -5,9 +5,7 @@ from django.utils import simplejson
 from django.http import HttpResponse
 
 from test_yarned_app.models import Person, RequestSnapShot
-from test_yarned_app.forms import RersonInfoForm
-
-from test_yarned_app.forms import ContactFormSet
+from test_yarned_app.forms import RersonInfoForm, ContactFormSet
 
 
 def person_info(request):
@@ -37,10 +35,9 @@ def person_info_edit(request):
                 contacts.save()
                 status = 'OK'
             else:
-                errors = [(key, value) for key,
-                    value in contacts.errors.items()]
+                errors = contacts.errors.items()
         else:
-            errors = [(key, value) for key, value in form.errors.items()]
+            errors = form.errors.items()
         return HttpResponse(simplejson.dumps(
             {'status': status, 'errors': errors, }),
             mimetype='application/javascript')
