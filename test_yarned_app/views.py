@@ -45,7 +45,8 @@ def person_info_edit(request):
             {'status': status, 'errors': errors, }),
             mimetype='application/javascript')
     else:
-        form = RersonInfoForm(instance=person, label_suffix=':')
+        form = RersonInfoForm(instance=person)
+
         contacts = ContactFormSet(instance=person)
     return render_to_response("person_info_edit.html", locals(),
         context_instance=RequestContext(request))

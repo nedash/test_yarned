@@ -79,6 +79,10 @@ class EditPersonInfoTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Nedash')
 
+	#test reversed order input fields
+        self.assertTrue(response.content.find('id_surname') >
+                        response.content.find('id_bio'))
+
         response = self.client.post('/accounts/login/',
                              {'username': '333', 'password': '333'})
         self.assertEqual(response.status_code, 200)
