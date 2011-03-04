@@ -46,7 +46,7 @@ def person_info_edit(request):
             mimetype='application/javascript')
     else:
         form = RersonInfoForm(instance=person)
-
+        form.fields.keyOrder.reverse()
         contacts = ContactFormSet(instance=person)
     return render_to_response("person_info_edit.html", locals(),
         context_instance=RequestContext(request))
