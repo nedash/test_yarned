@@ -1,10 +1,13 @@
 from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core import management
 
 from test_yarned_app.models import Person
 from test_yarned_app.models import Contact
 from test_yarned_app.models import RequestSnapShot
+import sys
+import StringIO
 
 
 class PersonInfoTest(TestCase):
@@ -97,3 +100,22 @@ class EditPersonInfoTest(TestCase):
         self.assertEqual(response.status_code, 302)
         response = self.client.get('/person_info_edit/')
         self.assertEqual(response.status_code, 302)
+
+
+class DjangoCommandTest(TestCase):
+    def testCmd(self):
+        sout = StringIO.StringIO()
+        sys.stdout = sout
+        management.call_command('printmodel')
+        sys.stdout = sys.__stdout__
+
+        contents = sout.getvalue()
+
+        res = contents.find('Model:test_yarned.test_yarned_app.models')
+        self.assertNotEqual(res, -1)
+        res = contents.find('Person 1')
+        self.assertNotEqual(res, -1)
+        res = contents.find('Contact 4')
+        self.assertNotEqual(res, -1)
+
+        sout.close()
