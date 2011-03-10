@@ -105,8 +105,10 @@ class DjangoCommandTest(TestCase):
     def testCmd(self):
         sout = StringIO.StringIO()
         sys.stdout = sout
+        sys.stderr = sout
         management.call_command('printmodel')
         sys.stdout = sys.__stdout__
+        sys.stdout = sys.__stderr__
 
         contents = sout.getvalue()
 
