@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block link %} <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}css/main.css" /> {% endblock %}
+
+{% block content %}
+	<b>Operation log</b>
+
+	<div class="div-table">
+		<div class="div-table-row">
+			<div class="div-table-col">Object</div>
+			<div class="div-table-col">Operation</div>
+			<div class="div-table-col">Date</div>
+		</div>
+
+		{% for item in log %}
+			<div class="div-table-row">
+				<div class="div-table-col">{{ item.obj_type }}</div>
+				<div class="div-table-col">{{ item.operation }}</div>
+				<div class="div-table-col">{{ item.date }}</div>
+			</div>
+		{% endfor %}
+	</div>
+
+	<a href="{% url person_info %}">goto main</a>
+{% endblock %}

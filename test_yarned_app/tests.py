@@ -2,12 +2,11 @@ from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core import management
-
-from test_yarned_app.models import Person
-from test_yarned_app.models import Contact
-from test_yarned_app.models import RequestSnapShot
 import sys
 import StringIO
+
+from test_yarned_app.models import Person, Contact, RequestSnapShot
+from test_yarned_app.models import OperationLog
 
 
 class PersonInfoTest(TestCase):
@@ -117,5 +116,21 @@ class DjangoCommandTest(TestCase):
         self.assertNotEqual(res, -1)
         res = contents.find('Contact 4')
         self.assertNotEqual(res, -1)
-
         sout.close()
+
+
+class SignalProcessorTest(TestCase):
+    def setUp(self):
+        self.person = Person.objects.get(surname="Nedash")
+        self.cskype = Contact.objects.create(person=self.person,
+                                ctype="skype", value="43534534534535")
+
+    def testProc(self):
+        log = OperationLog.objects.all()
+        count = log.count()
+        self.assertNotEqual(log.count(), 0)
+        self.person.surname = "NedashEx"
+        self.person.save()
+        self.cskype.delete()
+        log = OperationLog.objects.all()
+        self.assertTrue(log.count() > count)

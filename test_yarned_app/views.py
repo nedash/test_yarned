@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import simplejson
 from django.http import HttpResponse
 
-from test_yarned_app.models import Person, RequestSnapShot
+from test_yarned_app.models import Person, RequestSnapShot, OperationLog
 from test_yarned_app.forms import RersonInfoForm, ContactFormSet
 
 
@@ -17,6 +17,12 @@ def person_info(request):
 def requests_info(request):
     requests = RequestSnapShot.objects.all().order_by('-id')[0:10]
     return render_to_response('requests_info.html', {'requests': requests})
+
+
+def operation_log(request):
+    log = OperationLog.objects.all().order_by('-id')[0:10]
+    return render_to_response('operation_log.html',
+        context_instance=RequestContext(request, {'log': log}))
 
 
 @login_required
