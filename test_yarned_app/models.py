@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.db.models.signals import post_save, post_delete
+from django.conf import settings
 
 
 class Person(models.Model):
@@ -36,7 +37,7 @@ operation_type = {True: 'create', False: 'edit', None: 'delete'}
 
 
 def crud_postprocessor(sender, instance, **kwargs):
-    if sender in (Person, Contact, ):
+    if instance._meta.object_name not in settings.SIGNAL_SKIP_OBJECTS:
         #print instance._meta.object_name #kwargs
         OperationLog.objects.create(
                      obj_type=instance._meta.object_name,

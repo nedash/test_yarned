@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core import management
+from django.db.models import Q
 import sys
 import StringIO
 
@@ -136,3 +137,6 @@ class SignalProcessorTest(TestCase):
         self.cskype.delete()
         log = OperationLog.objects.all()
         self.assertTrue(log.count() > count)
+        log = OperationLog.objects.exclude(Q(operation='create') |
+                        Q(operation='edit') | Q(operation='delete'))
+        self.assertEqual(log.count(), 0)
