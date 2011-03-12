@@ -5,7 +5,7 @@
      "fields": {
        "name": "Yaroslav", 
        "surname": "Nedash", 
-       "bio": "Software engineer and financier",
+       "bio": "Software engineer and financier, big fan of Formula1",
        "birthdate" : "1985-01-01"
      }
    }, 
@@ -42,7 +42,7 @@
      "fields": {
         "person" : 1,
         "ctype" : "Other",
-        "value" : "tel:111-11-11, mob:093-578-78-91"
+        "value" : "tel:111-11-11, mob:093-578-78-91, 097-555-55-80"
      }
    }
  ]

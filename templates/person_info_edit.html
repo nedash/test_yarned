@@ -24,24 +24,31 @@
 			    $.unblockUI();
 			    if (responce.status=="OK")
 			    {
-				$('#er_status_block').hide();
+				//$('#er_status_block').hide();
+				$('.div-table-row-er').hide();
 				$('#ok_status_block').show();		
 			    }
 			    else 
 			    {
 				$('#ok_status_block').hide();
-				$('#er_status_block').show();
+				//$('#er_status_block').show();
 
-				er_html = '<ul style="width:25%;" > Some errors occurred: ';
+				/*er_html = '<ul style="width:25%;" > Some errors occurred: ';
 				for (key in responce.errors) {
 					error = responce.errors[key].toString().toLowerCase();
 					er_html += '<li>' + error + '</li>';
 				}
 				er_html += '</ul>';
-				$('#er_status_block').html(er_html);
+				$('#er_status_block').html(er_html);*/
+
+				for (key in responce.errors) {
+					pair = responce.errors[key];
+					$('#er_' + pair[0]).show();
+					$('#er_el_' + pair[0]).html('<label>' + pair[1] + '</label>');
+				}
 			    }
 			}
-		    };    
+		    }; 
 		    $('#personInfoForm').ajaxForm(options);
 		}); 
 	</script> 
@@ -49,8 +56,15 @@
 
 {% endblock %}
 
+{% block bheader %}
+	<div style="width:100%; min-height:50px;">
+		<div style="font-size:22px; float:left; " > 42 Coffee Cups Test Assignment </div>
+	</div>
+{% endblock %}
+
+
 {% block person_info %}
-	<div style="float:left; width: 800px; ">
+	<div style="float:left; width: 100%; ">
 		<form id="personInfoForm" action="{% url person_info_edit %}" method="post">
 			{% csrf_token %}
 
@@ -70,17 +84,23 @@
 					{% endif %}
 
 					<div class="div-table-row">
-					<div class="div-table-col" style="vertical-align:top" >
-						{{ field.label_tag }}: 
+						<div class="div-table-col" style="vertical-align:top" >
+							{{ field.label_tag }}:
+						</div>
+						<div class="div-table-col">{{ field }} </div>
 					</div>
-					<div class="div-table-col">{{ field }} </div>
+
+					<div class="div-table-row-er" id="er_{{ field.name }}" style="display:none;" > 
+						<div class="div-table-col" style="vertical-align:top" ></div>
+						<div class="div-table-col" id="er_el_{{ field.name }}" style="color: red;" >
+						</div>
 					</div>
 
 					{% endfor %}
 				</div>	
 			</div>
 
-			<div style="width:350px; float:right;">
+			<div style="width:350px; float:left; margin-left:100px;">
 				<ul>
 					{{ contacts.management_form }}
 
@@ -90,17 +110,17 @@
 				</ul>
 			</div>	
 
-			<div style="float:left; width: 800px; margin-left: 20px;">
+			<div style="float:left; width: 100%; margin-left: 20px;">
 				<input type="submit" value="save" name="saveData" />
 				<a href="{% url person_info %}">Cancel</a>
 			</div>
 		</form>
 
-		<div id="ok_status_block" align="center" class="ok_status_block">
+		<div id="ok_status_block" class="ok_status_block" style="margin-left:300px;" >
 			Person info have been successfully updated!
 		</div>
-
-		<div id="er_status_block" align="center" class="er_status_block"> </div>
+		
+		<!-- <div id="er_status_block" class="er_status_block"style="margin-left:300px;" > </div> -->
 	</div>
 {% endblock %}
 

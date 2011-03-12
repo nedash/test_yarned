@@ -62,9 +62,14 @@ def person_info_edit(request):
                 errors = contacts.errors.items()
         else:
             errors = form.errors.items()
-        return HttpResponse(simplejson.dumps(
-            {'status': status, 'errors': errors, }),
-            mimetype='application/javascript')
+
+        if request.is_ajax():
+            return HttpResponse(simplejson.dumps(
+                {'status': status, 'errors': errors, }),
+                mimetype='application/javascript')
+        else:
+            return render_to_response("person_info_edit.html", locals(),
+                context_instance=RequestContext(request))
     else:
         form = RersonInfoForm(instance=person)
         form.fields.keyOrder.reverse()
