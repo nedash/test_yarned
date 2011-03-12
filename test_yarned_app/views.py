@@ -15,8 +15,26 @@ def person_info(request):
 
 
 def requests_info(request):
-    requests = RequestSnapShot.objects.all().order_by('-id')[0:10]
-    return render_to_response('requests_info.html', {'requests': requests})
+    sort = '1'
+    if request.method == 'POST':
+        rs = RequestSnapShot.objects.get(id=request.POST['rs_id'])
+        rs.priority = int(request.POST['priority'])
+        rs.save()
+        if 'sort' in request.POST:
+            sort = request.POST['sort']
+    else:
+        if 'sort' in request.GET:
+            sort = request.GET['sort']
+
+    psort = '-'
+    if sort == '1':
+        psort = ''
+
+    requests = RequestSnapShot.objects.all().order_by('%spriority'
+                                         % psort, '-id')[0:10]
+    return render_to_response('requests_info.html',
+        context_instance=RequestContext(request,
+                {'requests': requests, 'sort': sort}))
 
 
 def operation_log(request):

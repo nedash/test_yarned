@@ -24,6 +24,7 @@ class Contact(models.Model):
 class RequestSnapShot(models.Model):
     user = models.ForeignKey(User, null=True)
     path = models.CharField(max_length=150)
+    priority = models.IntegerField(default=0)
 
 
 class OperationLog(models.Model):

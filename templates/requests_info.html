@@ -1,21 +1,61 @@
 {% extends "base.html" %}
 
+{% block script %}
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.5.js"></script>
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.validate.js"></script>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+		    $("form").each(function(){
+			$(this).validate();
+		    });
+		});
+	</script>
+{% endblock %}
+
 {% block content %}
-	<b>Requests</b>
+	<div align="center" >
 
-	<table border="1" style="width:300px;">
-		<tr>
-			<th>User</th>
-			<th>Path</th>
-		</tr>
+		<b>Requests</b>
 
-		{% for rq in requests %}
-		<tr>
-			<td align=center style="width:30%">{{rq.user}}</td>
-			<td style="width:70%">{{rq.path}}</td>
-		</tr>
-		{% endfor %}
-	</table>
+		<select onchange="location='{% url requests_info %}?sort=' + this.options[this.selectedIndex].value">
+		    <option {% if sort == "1" %} selected=selected {% endif %} value="1"> ascending </option>
+		    <option {% if sort == "0" %} selected=selected {% endif %} value="0"> descending </option>  
+		</select>
 
-	<a href="{% url person_info %}">goto main</a>
+		<table border="1" align=center style="width:400px;">
+			<tr>
+				<th>Id</th>
+				<th>User</th>
+				<th>Path</th>
+				<th>Priority</th>
+			</tr>
+
+			{% for rs in requests %}
+			<tr>
+				<td style="width:5%">{{rs.id}}</td>
+				<td align=center style="width:20%">{{rs.user}}</td>
+				<td style="width:40%">{{rs.path}}</td>
+
+				<td align=center style="width:35%">
+
+				{% if user.is_authenticated %}
+				<form class="prForm" id="pr{{ rs.id }}" action="{% url requests_info %}" method="post">
+					{% csrf_token %}
+				    	<input type="hidden" name="rs_id" value="{{ rs.id }}"/>
+					<input type="hidden" name="sort" value="{{ sort }}"/>
+				    	<input type="text" size=2 class='number' name="priority" value="{{ rs.priority }}" />
+				    	<input type="submit" value="save" name="saveData" />
+				</form>
+				{% else %}
+					{{ rs.priority }}
+				{% endif %}
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+
+		<a href="{% url person_info %}">goto main</a>
+	
+	</div>
 {% endblock %}

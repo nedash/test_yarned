@@ -67,7 +67,7 @@ class ContextProcessorTest(TestCase):
 
 class EditPersonInfoTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user('555', '555@5.com', '555')
+        self.user = User.objects.create_superuser('555', '555@5.com', '555')
 
     def testView(self):
         response = self.client.get('/person_info_edit/')
@@ -89,6 +89,9 @@ class EditPersonInfoTest(TestCase):
         #test template tag
         response = self.client.get('/')
         res = response.content.find('admin/test_yarned_app/person/1/')
+        self.assertNotEqual(res, -1)
+        response = self.client.get('/admin/test_yarned_app/person/1/')
+        res = response.content.find('input name="name" value="Yaroslav"')
         self.assertNotEqual(res, -1)
 
         response = self.client.post('/accounts/login/',
@@ -140,3 +143,27 @@ class SignalProcessorTest(TestCase):
         log = OperationLog.objects.exclude(Q(operation='create') |
                         Q(operation='edit') | Q(operation='delete'))
         self.assertEqual(log.count(), 0)
+
+
+class CustomerRequestTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user('555', '555@5.com', '555')
+
+    def testHttp(self):
+        response = self.client.post('/accounts/login/',
+                                        {'username': '555', 'password': '555'})
+        rs = RequestSnapShot.objects.get(id=1)
+        rs.priority = 1
+        rs.save()
+        response = self.client.get('/requests/?sort=1')
+        pos0 = response.content.find('name="priority" value="0"')
+        pos1 = response.content.find('name="priority" value="1"')
+        self.assertNotEqual(pos0, -1)
+        self.assertNotEqual(pos1, -1)
+        self.assertTrue(pos0 < pos1)
+        response = self.client.get('/requests/?sort=0')
+        pos0 = response.content.find('name="priority" value="0"')
+        pos1 = response.content.find('name="priority" value="1"')
+        self.assertNotEqual(pos0, -1)
+        self.assertNotEqual(pos1, -1)
+        self.assertTrue(pos1 < pos0)
