@@ -48,21 +48,26 @@ def person_info_edit(request):
     person = Person.objects.get(id=1)
 
     if request.method == 'POST':
+        checkpd = 'cmd' in request.POST and request.POST['cmd'] == 'valpd'
         form = RersonInfoForm(request.POST, instance=person)
-        contacts = ContactFormSet(request.POST, instance=person)
+        if not checkpd:
+            contacts = ContactFormSet(request.POST, instance=person)
+
         status = 'ERROR'
         errors = []
 
         if form.is_valid():
-            form.save()
-            if contacts.is_valid():
-                contacts.save()
-                status = 'OK'
-            else:
-                errors = contacts.errors.items()
+            if not checkpd:
+                form.save()
+                if contacts.is_valid():
+                    contacts.save()
+                    status = 'OK'
+                else:
+                    errors = contacts.errors.items()
+            status = 'OK'
         else:
             errors = form.errors.items()
-
+        print status, errors
         if request.is_ajax():
             return HttpResponse(simplejson.dumps(
                 {'status': status, 'errors': errors, }),

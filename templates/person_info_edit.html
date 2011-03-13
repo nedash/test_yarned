@@ -22,14 +22,11 @@
 			dataType: 'json',
 			success: function(responce) {
 			    $.unblockUI();
-			    if (responce.status=="OK")
-			    {
+			    if (responce.status=="OK") {
 				//$('#er_status_block').hide();
 				$('.div-table-row-er').hide();
 				$('#ok_status_block').show();		
-			    }
-			    else 
-			    {
+			    } else {
 				$('#ok_status_block').hide();
 				//$('#er_status_block').show();
 
@@ -49,8 +46,8 @@
 			    }
 			}
 		    }; 
-		    $('#personInfoForm').ajaxForm(options);
-		}); 
+		    $('#personInfoForm').ajaxForm(options);                     
+		});
 	</script> 
 
 
@@ -122,5 +119,49 @@
 		
 		<!-- <div id="er_status_block" class="er_status_block"style="margin-left:300px;" > </div> -->
 	</div>
+
+	<script>
+	    function validateData(widget) {
+		if (widget.value != widget.lastValue) {
+		    if (widget.timer) clearTimeout(widget.timer);
+		
+		    widget.timer = setTimeout(function () {                        
+		        $.ajax({
+		            url: '{% url person_info_edit %}',
+		            data: 'cmd=valpd' + '&' + widget.name + '=' + widget.value + '&csrfmiddlewaretoken=' + '{{csrf_token}}',
+		            dataType: 'json',
+		            type: 'post',
+		            success: function (responce) {
+                                findEr = false;
+				for (key in responce.errors) {
+				    pair = responce.errors[key];
+   				    if(pair[0] == widget.name) {
+					findEr = true;
+				        $('#er_' + pair[0]).show();
+				        $('#er_el_' + pair[0]).html('<label>' + pair[1] + '</label>');
+                                        break;
+                                    }
+				}
+
+			        if (!findEr) {
+				    $('#er_' + widget.name).hide();
+			        }
+		            }
+		        });
+		    }, 200);
+
+		    widget.lastValue = widget.value;
+                }
+
+            }
+
+            //"input[type='text']"
+	    $("#id_name").keyup(function () { validateData(this); });
+            $("#id_birthdate").keyup(function () { validateData(this); });
+            $("#id_birthdate").change(function () { validateData(this); });
+
+            //$("#id_surname").keyup(function () { validateData(this); });
+            //$("#id_bio").keyup(function () { validateData(this); });
+	</script> 
 {% endblock %}
 
